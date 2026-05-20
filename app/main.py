@@ -10,7 +10,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 
 from app.config import settings
 from app.middleware import RateLimitMiddleware
@@ -68,8 +68,8 @@ _CUSTOM_HEAD = b"""
 @app.get("/docs", include_in_schema=False)
 async def custom_swagger_ui():
     html = get_swagger_ui_html(openapi_url=app.openapi_url, title=app.title)
-    html.body = html.body.replace(b"</head>", _CUSTOM_HEAD + b"</head>")
-    return html
+    body = html.body.replace(b"</head>", _CUSTOM_HEAD + b"</head>")
+    return Response(content=body, media_type="text/html")
 
 
 @app.get("/", include_in_schema=False)
