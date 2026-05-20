@@ -67,7 +67,7 @@ class HantaPredictor:
 
             weights_path = os.path.realpath(settings.model_weights_path)
             logger.info("Loading weights from %s", weights_path)
-            state_dict = torch.load(weights_path, map_location=self.device)
+            state_dict = torch.load(weights_path, map_location=self.device, weights_only=False)
             self.model.load_state_dict(state_dict)
             self.model.to(self.device)
             self.model.eval()
